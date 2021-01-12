@@ -1,4 +1,4 @@
-# one_pic
+# One Picture app
 
 A new Flutter project.
 
