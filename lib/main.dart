@@ -50,18 +50,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,16 +63,26 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Card(
               color: Colors.black54,
+              semanticContainer: true,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               elevation: 100,
-              child: SizedBox(
-                height: 120,
-                width: 120,
+              child: new InkWell(
+                onTap: () => print("photo pressed"),
+                splashColor: Colors.black,
+                child: SizedBox(
+                  height: 120,
+                  width: 120,
+                  child: new Image.network(
+                    'https://placeimg.com/640/480/any',
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Color(0xffdddddd)),
-                color: Color(0xccffffff),
+                color: Color(0xffffffff),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: SizedBox(
@@ -102,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => print("Pressed open camera")
         tooltip: 'Abrir Câmera',
         child: Icon(Icons.camera),
       ),
