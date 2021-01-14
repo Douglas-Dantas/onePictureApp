@@ -1,4 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import "./componentes/PhotoTile.dart";
 
 void main() {
   runApp(MyApp());
@@ -11,19 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.teal,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'one pic a day demo'),
@@ -50,57 +41,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var lista = [
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile(),
+    PhotoTile()
+  ];
+
+  var _scale = "oi";
+  var _scaleStart;
+  var _scaleEnd;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(_scale),
       ),
-      body: Center(
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Card(
-              color: Colors.black54,
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              elevation: 100,
-              child: new InkWell(
-                onTap: () => print("photo pressed"),
-                splashColor: Colors.black,
-                child: SizedBox(
-                  height: 120,
-                  width: 120,
-                  child: new Image.network(
-                    'https://placeimg.com/640/480/any',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xffdddddd)),
-                color: Color(0xffffffff),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: SizedBox(
-                height: 20,
-                width: 80,
-                child: Center(
-                  child: Text(
-                    "11/01/2021",
-                    style: TextStyle(fontSize: 11),
-                  ),
-                ),
-              ),
-            ),
-          ],
+      body: GestureDetector(
+        onScaleUpdate: (details) {
+          setState(() {
+            var scale = details.scale;
+            _scale = "$scale";
+          });
+        },
+        child: GridView.count(
+          crossAxisCount: 3,
+          children: lista,
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(2),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print("Pressed open camera")
+        onPressed: () => print("Pressed open camera"),
         tooltip: 'Abrir Câmera',
         child: Icon(Icons.camera),
       ),
