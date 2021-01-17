@@ -69,7 +69,27 @@ class _CameraViewState extends State<CameraView> {
     return Scaffold(
       // appBar: AppBar(title: Text("Take a pic"), backgroundColor: Color(0xaa000000), elevation: 0,),
       body: Stack(
-        children: [_cameraPreviewWidget(), containerBotoes()],
+        children: [
+          _cameraPreviewWidget(),
+          appBarContainer(),
+          containerBotoes()
+        ],
+      ),
+    );
+  }
+
+  Widget appBarContainer() {
+    return Container(
+      // alignment: Alignment.topCenter,
+      color: Color(0x990000000),
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
+        children: [
+          BackButton(
+            color: Colors.white,
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
       ),
     );
   }
@@ -81,8 +101,12 @@ class _CameraViewState extends State<CameraView> {
         color: Color(0x990000000),
         width: MediaQuery.of(context).size.width,
         child: Stack(
+          alignment: Alignment.center,
           children: [
-            botaoTrocarCamera(),
+            Positioned(
+              child: botaoTrocarCamera(),
+              left: 15,
+            ),
             botaoBaterFoto(),
           ],
         ),
