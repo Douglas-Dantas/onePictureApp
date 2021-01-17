@@ -10,7 +10,7 @@ class PhotoTile extends StatelessWidget {
           color: Colors.black54,
           semanticContainer: true,
           clipBehavior: Clip.antiAliasWithSaveLayer,
-          elevation: 10,
+          elevation: 0,
           child: new InkWell(
             onTap: () => print("photo pressed"),
             splashColor: Colors.black,

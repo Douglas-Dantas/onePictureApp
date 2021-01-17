@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,7 +17,6 @@ class _CameraViewState extends State<CameraView> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
     availableCameras().then((availableCameras) {
       cameras = availableCameras;
       if (cameras.length > 0) {
@@ -27,10 +27,17 @@ class _CameraViewState extends State<CameraView> {
       } else {
         print("No camera available");
       }
+      // fechaSeCameraNegada();
     }).catchError((err) {
       print('Error: ${err.code}\nError Message: ${err.message}');
+      Navigator.pop(context);
     });
   }
+
+  // void fechaSeCameraNegada() async {
+  //   var status = await Permission.camera.status;
+  //   print('====> $status');
+  // }
 
   Future _initCameraController(CameraDescription cameraDescription) async {
     if (_controller != null) {
@@ -68,12 +75,14 @@ class _CameraViewState extends State<CameraView> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: Text("Take a pic"), backgroundColor: Color(0xaa000000), elevation: 0,),
-      body: Stack(
-        children: [
-          _cameraPreviewWidget(),
-          appBarContainer(),
-          containerBotoes()
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            _cameraPreviewWidget(),
+            appBarContainer(),
+            containerBotoes()
+          ],
+        ),
       ),
     );
   }
@@ -123,6 +132,7 @@ class _CameraViewState extends State<CameraView> {
         ),
       );
     }
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return CameraPreview(_controller);
   }
 
