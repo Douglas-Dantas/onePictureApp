@@ -65,10 +65,10 @@ class _TelaInicialState extends State<TelaInicial> {
           });
         },
         child: AnimatedCrossFade(
-          duration: Duration(milliseconds: 500),
+          duration: Duration(milliseconds: 200),
           firstChild: gridView(3),
           secondChild: gridView(4),
-          crossFadeState: _numberOfTilesPerRow == 3
+          crossFadeState: _numberOfTilesPerRow == 4
               ? CrossFadeState.showFirst
               : CrossFadeState.showSecond,
         ),
@@ -97,11 +97,14 @@ class _TelaInicialState extends State<TelaInicial> {
       overflow: Overflow.visible,
       children: [
         AnimatedPositioned(
+          onEnd: () => finalizouAnimacao(),
           duration: Duration(milliseconds: _duracaoAnimacao),
           bottom: shouldShowOptions ? 60 : 0,
-          child: Column(
-            children: [
-              RawMaterialButton(
+          child: Opacity(
+            opacity: shouldHideOptions ? 0 : 1,
+            child: Tooltip(
+              message: "Abrir Câmera",
+              child: RawMaterialButton(
                   child: Icon(
                     Icons.camera_alt,
                     color: Colors.white,
@@ -109,22 +112,25 @@ class _TelaInicialState extends State<TelaInicial> {
                   fillColor: _corBotoesOpcoes,
                   shape: CircleBorder(),
                   onPressed: () => clicouCamera()),
-            ],
+            ),
           ),
         ),
         AnimatedPositioned(
           duration: Duration(milliseconds: _duracaoAnimacao),
           bottom: shouldShowOptions ? 105 : 0,
-          child: Tooltip(
-            message: "Abrir Álbum",
-            child: RawMaterialButton(
-                child: Icon(
-                  Icons.photo_album,
-                  color: Colors.white,
-                ),
-                fillColor: _corBotoesOpcoes,
-                shape: CircleBorder(),
-                onPressed: () => print('Clicou Album')),
+          child: Opacity(
+            opacity: shouldHideOptions ? 0 : 1,
+            child: Tooltip(
+              message: "Abrir Álbum",
+              child: RawMaterialButton(
+                  child: Icon(
+                    Icons.photo_album,
+                    color: Colors.white,
+                  ),
+                  fillColor: _corBotoesOpcoes,
+                  shape: CircleBorder(),
+                  onPressed: () => print('Clicou Album')),
+            ),
           ),
         ),
         FloatingActionButton(
@@ -134,22 +140,29 @@ class _TelaInicialState extends State<TelaInicial> {
           backgroundColor: shouldShowOptions ? Colors.red : _corBotoesOpcoes,
           child: Icon(
             shouldShowOptions ? Icons.cancel : Icons.add_a_photo,
-            // color: ,
-            // size: 45,
           ),
         ),
       ],
     );
   }
 
+  void finalizouAnimacao() {
+    if (shouldShowOptions)
+      shouldHideOptions = false;
+    else
+      shouldHideOptions = true;
+    setState(() {});
+  }
+
   void clicouFloatingActionButton() {
-    setState(() {
-      shouldShowOptions = !shouldShowOptions;
-      if (shouldHideOptions) shouldHideOptions = !shouldHideOptions;
-    });
+    shouldShowOptions = !shouldShowOptions;
+    if (shouldShowOptions) shouldHideOptions = false;
+    setState(() {});
   }
 
   void clicouCamera() {
+    shouldShowOptions = !shouldShowOptions;
+    setState(() {});
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => CameraView()));
   }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import "./componentes/PhotoTile.dart";
-import 'Telas/TelaCamera.dart';
 import 'Telas/TelaInicial.dart';
 
 void main() {
