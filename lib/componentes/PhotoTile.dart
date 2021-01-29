@@ -1,47 +1,88 @@
 import 'package:flutter/material.dart';
 
-class PhotoTile extends StatelessWidget {
+class PhotoTile extends StatefulWidget {
+  
+  @override
+  _PhotoTileState createState() => _PhotoTileState();
+}
+
+class _PhotoTileState extends State<PhotoTile> {
+  double _width = 120;
+  double _height = 120;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Card(
-          color: Colors.black54,
-          semanticContainer: true,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          elevation: 0,
-          child: new InkWell(
-            onTap: () => print("photo pressed"),
-            splashColor: Colors.black,
-            child: SizedBox(
-              height: 120,
-              width: 120,
-              child: new Image.network(
-                'https://placeimg.com/640/480/any',
-                fit: BoxFit.cover,
+    return Container(
+      padding: const EdgeInsets.all(3),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            imagemView(),
+            Material(
+              color: Colors.transparent,
+              child: new InkWell(
+                onTap: () => print("photo pressed"),
               ),
             ),
-          ),
+          ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Color(0xffdddddd)),
-            color: Color(0xffffffff),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: SizedBox(
-            height: 20,
-            width: 80,
-            child: Center(
-              child: Text(
-                "11/01/2021",
-                style: TextStyle(fontSize: 11),
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
+
+  Widget imagemView() {
+    Widget placeholder = SizedBox(
+      height: _height,
+      width: _width,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    Function onLoading =
+        (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+      if (loadingProgress == null)
+        return child;
+      else
+        return placeholder;
+    };
+
+    return GridTile(
+      footer: dataBox(),
+      child: new Image.network(
+        'https://placeimg.com/640/480/any',
+        loadingBuilder: onLoading,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  // Widget dataBox() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       // border: Border.all(color: Color(0xffdddddd)),
+  //       color: Colors.black45,
+  //       // borderRadius: BorderRadius.circular(5),
+  //     ),
+  //     child: SizedBox(
+  //       height: 20,
+  //       width: 80,
+  //       child: Center(
+  //         child: Text(
+  //           "11/01/2021",
+  //           style: TextStyle(
+  //               fontSize: 11, color: Colors.white, fontWeight: FontWeight.w800),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

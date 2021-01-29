@@ -57,9 +57,9 @@ class _TelaInicialState extends State<TelaInicial> {
       body: GestureDetector(
         onScaleUpdate: (details) {
           if (details.scale > 1)
-            _numberOfTilesPerRow = 4;
-          else
             _numberOfTilesPerRow = 3;
+          else
+            _numberOfTilesPerRow = 4;
           setState(() {
             _scale = "${details.scale}";
           });
@@ -68,7 +68,7 @@ class _TelaInicialState extends State<TelaInicial> {
           duration: Duration(milliseconds: 200),
           firstChild: gridView(3),
           secondChild: gridView(4),
-          crossFadeState: _numberOfTilesPerRow == 4
+          crossFadeState: _numberOfTilesPerRow == 3
               ? CrossFadeState.showFirst
               : CrossFadeState.showSecond,
         ),
