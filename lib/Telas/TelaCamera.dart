@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,7 +127,7 @@ class _CameraViewState extends State<CameraView> {
   Widget _cameraPreviewWidget() {
     if (_controller == null || !_controller.value.isInitialized) {
       return Container(
-        color: Colors.black,
+        color: kDebugMode ? Colors.blueGrey : Colors.black,
         child: Center(
           child: CircularProgressIndicator(),
         ),
@@ -145,6 +146,7 @@ class _CameraViewState extends State<CameraView> {
       child: Icon(
         Icons.photo_camera,
         size: 50,
+        color: Colors.white,
       ),
     );
   }

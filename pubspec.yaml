@@ -32,6 +32,7 @@ dependencies:
   path_provider:
   path:
   permission_handler:
+  image_picker: ^0.7.2
 
 dev_dependencies:
   flutter_test:

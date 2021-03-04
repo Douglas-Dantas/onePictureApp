@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
 import "../componentes/PhotoTile.dart";
 import '../Telas/TelaCamera.dart';
 
@@ -27,6 +29,10 @@ class _TelaInicialState extends State<TelaInicial> {
     PhotoTile(),
     PhotoTile()
   ];
+
+  //open galery
+  File _image;
+  final picker = ImagePicker();
 
   var _scale = "oi";
   var _scaleStart;
@@ -94,7 +100,7 @@ class _TelaInicialState extends State<TelaInicial> {
   Widget floatingActionButton() {
     return Stack(
       alignment: Alignment.bottomCenter,
-      overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       children: [
         AnimatedPositioned(
           onEnd: () => finalizouAnimacao(),
@@ -123,13 +129,14 @@ class _TelaInicialState extends State<TelaInicial> {
             child: Tooltip(
               message: "Abrir Álbum",
               child: RawMaterialButton(
-                  child: Icon(
-                    Icons.photo_album,
-                    color: Colors.white,
-                  ),
-                  fillColor: _corBotoesOpcoes,
-                  shape: CircleBorder(),
-                  onPressed: () => print('Clicou Album')),
+                child: Icon(
+                  Icons.photo_album,
+                  color: Colors.white,
+                ),
+                fillColor: _corBotoesOpcoes,
+                shape: CircleBorder(),
+                onPressed: () => clicouAlbum(),
+              ),
             ),
           ),
         ),
@@ -140,6 +147,7 @@ class _TelaInicialState extends State<TelaInicial> {
           backgroundColor: shouldShowOptions ? Colors.red : _corBotoesOpcoes,
           child: Icon(
             shouldShowOptions ? Icons.cancel : Icons.add_a_photo,
+            color: Colors.white,
           ),
         ),
       ],
@@ -165,5 +173,22 @@ class _TelaInicialState extends State<TelaInicial> {
     setState(() {});
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => CameraView()));
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    // final bytes = await pickedFile.readAsBytes();
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  void clicouAlbum() {
+    getImage();
   }
 }

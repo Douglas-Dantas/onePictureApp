@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:one_pic/Telas/DetalheFoto.dart';
 
 class PhotoTile extends StatefulWidget {
-  
   @override
   _PhotoTileState createState() => _PhotoTileState();
 }
@@ -15,6 +15,11 @@ class _PhotoTileState extends State<PhotoTile> {
     super.initState();
   }
 
+  tocouTile() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DetalheFoto()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,12 +29,13 @@ class _PhotoTileState extends State<PhotoTile> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Stack(
           alignment: Alignment.bottomCenter,
+          fit: StackFit.expand,
           children: [
             imagemView(),
             Material(
               color: Colors.transparent,
               child: new InkWell(
-                onTap: () => print("photo pressed"),
+                onTap: () => tocouTile(),
               ),
             ),
           ],
@@ -56,7 +62,7 @@ class _PhotoTileState extends State<PhotoTile> {
     };
 
     return GridTile(
-      footer: dataBox(),
+      // footer: dataBox(),
       child: new Image.network(
         'https://placeimg.com/640/480/any',
         loadingBuilder: onLoading,
